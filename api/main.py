@@ -40,8 +40,8 @@ fiats = [
     "MXN", "SGD", "HKD", "NOK", "KRW",
     "RUB", "INR", "BRL", "ZAR", "TRY"
 ]
-@app.get("/api/health")
-def health_check():
+@app.get("/api/api")
+def api():
     url = f"https://api.coingecko.com/api/v3/simple/price?ids={','.join(crypto_ids)}&vs_currencies={','.join(fiats)}"
     headers = {"x-cg-demo-api-key": "CG-XKRuMT9EEd72qU8ASpKci4Wt"}
     data = requests.get(url, headers=headers).json()
