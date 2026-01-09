@@ -11,6 +11,7 @@ _last_random = None
 _last_time = 0
 
 @app.get("/api/random-number")
+@app.head("/api/random-number") 
 def random_number(a: int = 1, b: int = 10):
     global _last_random, _last_time
 
