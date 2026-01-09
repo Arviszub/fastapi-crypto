@@ -1,17 +1,28 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import random
 import requests
+import time
 app = FastAPI()
 
 @app.get("/")
 def root():
     return {"message": "API is running"}
+_last_random = None
+_last_time = 0
 
 @app.get("/api/random-number")
-def random_number(a: int, b: int):
-    return {
-        random.randint(a, b)
-    }
+def random_number(a: int = 1, b: int = 10):
+    global _last_random, _last_time
+
+    if a > b:
+        raise HTTPException(status_code=400, detail="Parameter a must be <= b")
+    
+    # cache result for 5 seconds
+    if time.time() - _last_time > 5:
+        _last_random = random.randint(a, b)
+        _last_time = time.time()
+
+    return {"random_number": _last_random}
 crypto_ids = [
     "bitcoin",
     "ethereum",
